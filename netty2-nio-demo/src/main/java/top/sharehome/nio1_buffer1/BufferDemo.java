@@ -1,4 +1,4 @@
-package top.sharehome.nio1_buffer;
+package top.sharehome.nio1_buffer1;
 
 import java.nio.ByteBuffer;
 
@@ -22,7 +22,8 @@ import java.nio.ByteBuffer;
  * Buffer mark()	在此缓冲区的位置设置标记
  * Buffer reset()	将此缓冲区的位置重置为以前标记的位置
  * Buffer clear()	清除此缓冲区，即将各个标记恢复到初始状态，但是数据并没有真正擦除
- * Buffer flip()	反转此缓冲区
+ * Buffer compact() 将还没读完的部分压缩至缓冲区首部，下一次可以继续读
+ * Buffer flip()	反转此缓冲区读写模式
  * Buffer rewind()	重绕此缓冲区
  * int remaining()	返回当前位置与限制之间的元素数
  * boolean hasRemaining()	告知在当前位置和限制之间是否有元素
@@ -84,7 +85,11 @@ public class BufferDemo {
     }
 
     private static String getContent(ByteBuffer buffer) {
-        return "内容为：" + new String(buffer.array()) + " capacity为：" + buffer.capacity() + " position为：" + buffer.position() + " limit为：" + buffer.limit() + " mark为：" + buffer.mark();
+        return "内容为：" + new String(buffer.array()) + " capacity为：" + buffer.capacity() + " position为：" + buffer.position() + " limit为：" + buffer.limit();
+    }
+
+    private static String getContent(int sign, ByteBuffer buffer) {
+        return sign + "==>" + "内容为：" + new String(buffer.array()) + " capacity为：" + buffer.capacity() + " position为：" + buffer.position() + " limit为：" + buffer.limit();
     }
 
 }
