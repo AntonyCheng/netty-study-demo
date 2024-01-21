@@ -11,6 +11,7 @@
     <modules>
         <module>netty1-bio-demo</module>
         <module>netty2-nio-demo</module>
+        <module>netty2-nio-demo/nio1-channel-demo</module>
     </modules>
 
     <properties>
