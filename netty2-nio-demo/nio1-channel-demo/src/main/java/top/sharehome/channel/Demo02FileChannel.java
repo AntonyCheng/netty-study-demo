@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * FileChannel示例代码类
+ * 主要用于处理文件的通道
  *
  * @author AntonyCheng
  */
@@ -41,7 +42,7 @@ public class Demo02FileChannel {
      */
     public static void readByChannel() throws IOException {
 
-        String path = PROJECT_PATH + "/netty2-nio-demo/nio1-channel-demo/src/main/java/top/sharehome/channel/file/2.txt";
+        String path = PROJECT_PATH + "/netty2-nio-demo/nio1-channel-demo/src/main/java/top/sharehome/channel/file/1.txt";
 
         // 1、创建一个可读文件流Channel
         RandomAccessFile randomAccessFile = new RandomAccessFile(path, "rw");
@@ -132,7 +133,7 @@ public class Demo02FileChannel {
             buffer.clear();
         }
 
-        // 4、关闭通道和文件流
+        // 关闭通道和文件流
         srcChannel.close();
         destChannel.close();
         srcStream.close();
@@ -141,17 +142,40 @@ public class Demo02FileChannel {
     }
 
     /**
-     * 5、其他常用API
+     * 5、通道之间的数据传输
+     * 也就是transferTo()和transferFrom()两个方法，这个也是文件复制效率最高的方法之一
+     */
+    private static void transfer() throws IOException {
+        // 先创建两个通道
+        String src = PROJECT_PATH + "/netty2-nio-demo/nio1-channel-demo/src/main/java/top/sharehome/channel/file/2.txt";
+        String dest = PROJECT_PATH + "/netty2-nio-demo/nio1-channel-demo/src/main/java/top/sharehome/channel/file/2_tmp.txt";
+        FileInputStream srcStream = new FileInputStream(src);
+        FileChannel srcChannel = srcStream.getChannel();
+        FileOutputStream destStream = new FileOutputStream(dest);
+        FileChannel destChannel = destStream.getChannel();
+        // 下面两行代码效果一样
+        srcChannel.transferTo(0, srcChannel.size(), destChannel);
+        destChannel.transferFrom(srcChannel, 0, srcChannel.size());
+        // 关闭通道和文件流
+        srcChannel.close();
+        destChannel.close();
+        srcStream.close();
+        destStream.close();
+    }
+
+
+    /**
+     * 6、其他常用API
      */
     private static void otherApis() throws IOException {
 
         // 1、position()方法：在通道绑定的文件某个位置进行读写操作
         // 例如现在有一个2.txt，内容是"hello world!"，要求只读取world!
-        String path1 = PROJECT_PATH + "/netty2-nio-demo/nio1-channel-demo/src/main/java/top/sharehome/channel/file/2.txt";
+        String path1 = PROJECT_PATH + "/netty2-nio-demo/nio1-channel-demo/src/main/java/top/sharehome/channel/file/3.txt";
         FileInputStream positionSrc = new FileInputStream(path1);
         FileChannel positionSrcChannel = positionSrc.getChannel().position(5);
         ByteBuffer bufferSrc = ByteBuffer.allocate(1);
-        System.out.print("读取内容为:");
+        System.out.print("读取内容为：");
         while (positionSrcChannel.read(bufferSrc) != -1) {
             bufferSrc.flip();
             while (bufferSrc.hasRemaining()) {
@@ -162,14 +186,36 @@ public class Demo02FileChannel {
         System.out.println();
         positionSrcChannel.close();
         positionSrc.close();
+
         // 2、size()方法：获取通道绑定的文件大小
         // 例如现在有一个3.txt，内容是"123"，要求得到该文件的大小
-        String path2 = PROJECT_PATH + "/netty2-nio-demo/nio1-channel-demo/src/main/java/top/sharehome/channel/file/3.txt";
+        String path2 = PROJECT_PATH + "/netty2-nio-demo/nio1-channel-demo/src/main/java/top/sharehome/channel/file/4.txt";
         FileInputStream sizeSrc = new FileInputStream(path2);
         FileChannel sizeSrcChannel = sizeSrc.getChannel();
         long fileSize = sizeSrcChannel.size();
         System.out.println("文件大小为：" + fileSize);
+        sizeSrcChannel.close();
+        sizeSrc.close();
 
+        // 3、truncate()方法，截取一个文件，
+        // 例如现在有一个4.txt，内容是"112233445566"，要求变成"11223344"
+        String path3 = PROJECT_PATH + "/netty2-nio-demo/nio1-channel-demo/src/main/java/top/sharehome/channel/file/5.txt";
+        RandomAccessFile truncateSrc = new RandomAccessFile(path3, "rw");
+        FileChannel truncateSrcChannel = truncateSrc.getChannel();
+        // 截取前八个字符
+        truncateSrcChannel.truncate(8);
+        ByteBuffer truncateBuffer = ByteBuffer.allocate(10);
+        System.out.print("截取后的内容为：");
+        while (truncateSrcChannel.read(truncateBuffer) != -1) {
+            truncateBuffer.flip();
+            while (truncateBuffer.hasRemaining()) {
+                System.out.print((char) truncateBuffer.get());
+            }
+            truncateBuffer.clear();
+        }
+        System.out.println();
+        truncateSrcChannel.close();
+        truncateSrc.close();
 
     }
 
