@@ -20,7 +20,7 @@ public class Demo04SocketChannel {
     /**
      * 创建SocketChannel
      */
-    private static void create() throws IOException {
+    private static void open() throws IOException {
         // 1、直接使用open方法进行创建（常用）
         SocketChannel socketChannel1 = SocketChannel.open(new InetSocketAddress("www.baidu.com", 80));
         // 2、使用open方法创建一个空SocketChannel，然后单独使用connect方法进行连接
@@ -90,7 +90,7 @@ public class Demo04SocketChannel {
      * 方法入口
      */
     public static void main(String[] args) throws IOException {
-        readAndWrite();
+        read();
     }
 
 }

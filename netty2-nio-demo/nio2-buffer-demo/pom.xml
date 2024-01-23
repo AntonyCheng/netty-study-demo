@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>nio1-channel-demo</artifactId>
+    <artifactId>nio2-buffer-demo</artifactId>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>

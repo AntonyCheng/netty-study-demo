@@ -10,6 +10,10 @@
     </parent>
 
     <artifactId>netty2-nio-demo</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>nio2-buffer-demo</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
