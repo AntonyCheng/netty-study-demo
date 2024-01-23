@@ -1,7 +1,12 @@
 package top.sharehome.buffer;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
+import java.nio.IntBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -20,6 +25,8 @@ import java.nio.charset.StandardCharsets;
  * @author AntonyCheng
  */
 public class Demo01BaseOperation {
+
+    private static final String PROJECT_PATH = System.getProperty("user.dir");
 
     /**
      * 1、创建操作
@@ -40,10 +47,94 @@ public class Demo01BaseOperation {
     }
 
     /**
+     * 2、读操作
+     */
+    private static void read() throws IOException {
+        // 创建通道
+        RandomAccessFile randomAccessFile = new RandomAccessFile(PROJECT_PATH + "/netty2-nio-demo/nio2-buffer-demo/src/main/java/top/sharehome/buffer/file/1.txt", "rw");
+        FileChannel channel = randomAccessFile.getChannel();
+
+        // 创建Buffer
+        ByteBuffer buffer = ByteBuffer.allocate(5);
+
+        // 循环读取Channel中的内容到Buffer中
+        int count;
+        while ((count = channel.read(buffer)) != -1) {
+            System.out.println("读取到了 " + count + " 个字符");
+            // 从读模式切换到写模式
+            buffer.flip();
+            // 监控buffer中是否还有没有操作的元素
+            while (buffer.hasRemaining()) {
+                System.out.print((char) buffer.get());
+            }
+            // 清空buffer中的数据
+            buffer.clear();
+        }
+
+        // 关闭通道和文件流
+        channel.close();
+        randomAccessFile.close();
+    }
+
+    /**
+     * 3、写操作
+     */
+    private static void write() throws IOException {
+        // 创建通道
+        RandomAccessFile randomAccessFile = new RandomAccessFile(PROJECT_PATH + "/netty2-nio-demo/nio2-buffer-demo/src/main/java/top/sharehome/buffer/file/1.txt", "rw");
+        FileChannel channel = randomAccessFile.getChannel();
+
+        // 创建Buffer
+        ByteBuffer buffer = ByteBuffer.allocate(1024);
+
+        // 将数据写入buffer
+        buffer.put((byte) 'b');
+        buffer.put((byte) 'u');
+        buffer.put((byte) 'f');
+        buffer.put((byte) 'f');
+        buffer.put((byte) 'e');
+        buffer.put((byte) 'r');
+
+        // 将Buffer从写模式转为读模式
+        buffer.flip();
+
+        // 通过channel读取buffer中的数据写入文件
+        while (buffer.hasRemaining()) {
+            int count = channel.write(buffer);
+            System.out.println("写入了 " + count + " 个字符");
+        }
+
+        // 关闭通道和文件流
+        channel.close();
+        randomAccessFile.close();
+    }
+
+    /**
+     * XxxBuffer示例
+     */
+    private static void otherBuffer() {
+        // 创建一个IntBuffer
+        IntBuffer intBuffer = IntBuffer.allocate(1024);
+
+        // 循环插入数据
+        for (int i = 0; i < 10; i++) {
+            intBuffer.put(i);
+        }
+
+        // 将IntBuffer从写模式转换为读模式
+        intBuffer.flip();
+
+        // 循环读取数据
+        for (int i = 0; i < 10; i++) {
+            System.out.println("value" + (i + 1) + ": " + intBuffer.get());
+        }
+    }
+
+    /**
      * 方法入口
      */
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws IOException {
+        otherBuffer();
     }
 
 }
