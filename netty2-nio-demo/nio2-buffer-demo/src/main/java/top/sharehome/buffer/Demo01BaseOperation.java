@@ -48,6 +48,8 @@ public class Demo01BaseOperation {
 
     /**
      * 2、读操作
+     * （1）方法一：使用Channel.write()方法将Buffer中的数据读取到Channel里（Channel实例中有演示）
+     * （2）方法二：使用get()方法进行直接读取
      */
     private static void read() throws IOException {
         // 创建通道
@@ -78,6 +80,8 @@ public class Demo01BaseOperation {
 
     /**
      * 3、写操作
+     * （1）方法一：使用Channel.read()方法将Channel中的数据写入到Buffer里（Channel实例中有演示）
+     * （2）方法二：使用put()方法进行直接写入
      */
     private static void write() throws IOException {
         // 创建通道
