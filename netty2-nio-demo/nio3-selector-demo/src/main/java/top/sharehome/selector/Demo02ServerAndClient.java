@@ -83,9 +83,9 @@ public class Demo02ServerAndClient {
                     }
                     channel.close();
                 }
+                // 每次一定要移除迭代器next元素
+                iterator.remove();
             }
-            // 每次一定要移除迭代器
-            iterator.remove();
         }
     }
 
@@ -93,18 +93,18 @@ public class Demo02ServerAndClient {
      * 方法入口
      */
     public static void main(String[] args) throws InterruptedException, IOException {
-//        // 异步调用方法执行客户端和服务端的交互
-//        new Thread(() -> {
-//            try {
-//                server();
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }).start();
-//        Thread.sleep(2000);
-//        client();
-//
-//        System.in.read();
+        // 异步调用方法执行客户端和服务端的交互
+        new Thread(() -> {
+            try {
+                server();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
+        Thread.sleep(2000);
+        client();
+
+        System.in.read();
     }
 
 }

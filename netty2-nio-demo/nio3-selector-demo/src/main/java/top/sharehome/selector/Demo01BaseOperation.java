@@ -61,6 +61,7 @@ public class Demo01BaseOperation {
             } else if (key.isWritable()) {
                 // 可写就绪状态
             }
+            // 每次一定要移除迭代器next元素
             iterator.remove();
         }
     }

@@ -75,9 +75,9 @@ public class Demo04Summarize {
                             // 清空buffer
                             serverBuffer.clear();
                         }
+                        // 每次一定要移除迭代器next元素
+                        iterator.remove();
                     }
-                    // 移除迭代对象中的最后一个元素
-                    iterator.remove();
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);

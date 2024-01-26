@@ -60,9 +60,9 @@ public class Demo03SuperServer {
                     }
                     channel.close();
                 }
+                // 每次一定要移除迭代器的next元素
+                iterator.remove();
             }
-            // 每次一定要移除迭代器
-            iterator.remove();
         }
     }
 
