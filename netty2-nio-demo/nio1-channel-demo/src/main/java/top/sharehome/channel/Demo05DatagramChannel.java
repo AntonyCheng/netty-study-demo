@@ -61,6 +61,7 @@ public class Demo05DatagramChannel {
     /**
      * 伪“连接”，对于UDP就是无连接的状态，这里的连接只是从API层面对其进行描述
      * 这里就是使用connect方法之后对特定服务地址使用read和write接收和发送数据
+     * DatagramChannel中的read()方法如果没读到数据，返回的是0，而FileChannel返回的是-1
      */
     private static void readAndWritePseudoConnect() throws IOException {
         // 使用open方法创建一个DatagramChannel

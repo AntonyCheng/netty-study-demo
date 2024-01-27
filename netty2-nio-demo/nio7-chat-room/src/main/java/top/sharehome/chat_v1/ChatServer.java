@@ -1,6 +1,4 @@
-package top.sharehome.chat;
-
-import io.netty.util.internal.StringUtil;
+package top.sharehome.chat_v1;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

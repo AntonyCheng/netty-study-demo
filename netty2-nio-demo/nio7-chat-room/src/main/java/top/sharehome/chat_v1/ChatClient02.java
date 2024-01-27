@@ -1,4 +1,4 @@
-package top.sharehome.chat;
+package top.sharehome.chat_v1;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -8,11 +8,8 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
-import java.util.Set;
 
 /**
  * 聊天室客户端
@@ -20,7 +17,7 @@ import java.util.Set;
  * @author AntonyCheng
  */
 
-public class ChatClient01 {
+public class ChatClient02 {
 
     /**
      * 客户端启动方法
@@ -93,7 +90,7 @@ public class ChatClient01 {
      * 方法入口
      */
     public static void main(String[] args) throws IOException {
-        startClient("01");
+        startClient("02");
     }
 
 }

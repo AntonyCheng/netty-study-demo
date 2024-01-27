@@ -1,4 +1,4 @@
-package top.sharehome.chat;
+package top.sharehome.chat_v1;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -8,11 +8,8 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
-import java.util.Set;
 
 /**
  * 聊天室客户端

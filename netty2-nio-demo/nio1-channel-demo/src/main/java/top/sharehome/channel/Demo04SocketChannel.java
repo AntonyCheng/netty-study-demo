@@ -66,6 +66,7 @@ public class Demo04SocketChannel {
 
     /**
      * 读写示例（已读为例）
+     * SocketChannel中的read()方法如果没读到数据，返回的是0，而FileChannel返回的是-1
      */
     private static void read() throws IOException {
         // 创建SocketChannel（连接百度是得不到数据的，所以最后buffer中的内容为空）
