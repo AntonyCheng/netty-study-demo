@@ -9,14 +9,14 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>netty1-bio-demo</module>
-        <module>netty2-nio-demo</module>
-        <module>netty2-nio-demo/nio1-channel-demo</module>
+        <module>netty1-bio</module>
+        <module>netty2-nio</module>
+        <module>netty3-overview</module>
     </modules>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
