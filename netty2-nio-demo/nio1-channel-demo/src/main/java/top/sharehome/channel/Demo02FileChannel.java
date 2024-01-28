@@ -154,6 +154,9 @@ public class Demo02FileChannel {
         FileOutputStream destStream = new FileOutputStream(dest);
         FileChannel destChannel = destStream.getChannel();
         // 下面两行代码效果一样
+        // 但要注意：
+        // Linux系统中该方法能够传输任意大小的文件
+        // Windows系统中该方法仅能够传输8M大小的文件，此时需要分段发送文件，可以提前计算一个文件需要发送的次数，然后再进行截取发送
         srcChannel.transferTo(0, srcChannel.size(), destChannel);
         destChannel.transferFrom(srcChannel, 0, srcChannel.size());
         // 关闭通道和文件流
