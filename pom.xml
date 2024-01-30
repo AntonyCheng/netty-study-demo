@@ -9,9 +9,9 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>netty1-bio</module>
-        <module>netty2-nio</module>
-        <module>netty3-overview</module>
+        <module>netty01-bio</module>
+        <module>netty02-nio</module>
+        <module>netty03-netty</module>
     </modules>
 
     <properties>
