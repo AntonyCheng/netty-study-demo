@@ -26,7 +26,7 @@ public class HttpServer {
                     .childHandler(new HttpServerInitializer());
             System.out.println("服务器准备好了...");
             ChannelFuture channelFuture = serverBootstrap.bind(9999).sync();
-            System.out.println("服务器已经准备好了");
+            System.out.println("服务器已经准备好了！");
             // 对通道关闭事件进行同步监听
             channelFuture.channel().closeFuture().sync();
         } catch (InterruptedException e) {
