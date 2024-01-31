@@ -8,6 +8,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
+import top.sharehome.core.client.handler.ClientHandler;
 
 import java.net.InetSocketAddress;
 
@@ -29,15 +31,15 @@ public class NettyClient {
             Bootstrap bootstrap = new Bootstrap();
             // 编写启动配置
             bootstrap.group(eventLoopGroup)
-                    .channel(NioServerSocketChannel.class)
-                    .handler(new ChannelInitializer<SocketChannel>() {
+                    .channel(NioSocketChannel.class)
+                    .handler(new ChannelInitializer<NioSocketChannel>() {
                         @Override
-                        protected void initChannel(SocketChannel ch) throws Exception {
-
+                        protected void initChannel(NioSocketChannel ch) throws Exception {
+                            ch.pipeline().addLast(new ClientHandler());
                         }
                     });
             // 连接服务端
-            ChannelFuture channelFuture = bootstrap.connect(new InetSocketAddress("127.0.0.1", 9999)).sync();
+            ChannelFuture channelFuture = bootstrap.connect(new InetSocketAddress("127.0.0.1", 9999));
             // 添加监听器
             channelFuture.addListener(new ChannelFutureListener() {
                 @Override
@@ -45,7 +47,7 @@ public class NettyClient {
                     if (channelFuture.isSuccess()) {
                         System.out.println("连接服务端成功...");
                     }else {
-                        System.err.println(channelFuture.cause().getMessage());
+                        System.out.println(channelFuture.cause().getMessage());
                     }
                 }
             });
