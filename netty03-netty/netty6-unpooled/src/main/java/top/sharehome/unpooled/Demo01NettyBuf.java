@@ -47,11 +47,10 @@ public class Demo01NettyBuf {
         // 2-2 Netty
         System.out.println("Netty read:");
         ByteBuf nettyBuffer = Unpooled.copiedBuffer("HelloWorld", StandardCharsets.UTF_8);
-        // 读取Netty buffer中的可读数据
-//        for (int i = 0; i < nettyBuffer.writerIndex(); i++) {
-//            System.out.print((char) nettyBuffer.readByte());
-//        }
-        for (int i = 0; i < nettyBuffer.readableBytes(); i++) {
+        // 先获取到可读个数，因为缓冲区数值是变化的，每次循环都会发生改变，循环变量也就会跟着发生改变
+        int length = nettyBuffer.writerIndex() - nettyBuffer.readerIndex();
+        // int length = nettyBuffer.readableBytes();
+        for (int i = 0; i < length; i++) {
             System.out.print((char) nettyBuffer.readByte());
         }
     }
@@ -63,14 +62,16 @@ public class Demo01NettyBuf {
         // 3-1 NIO
         ByteBuffer nioBuffer = ByteBuffer.allocate(10);
         for (int i = 0; i < nioBuffer.capacity(); i++) {
-            nioBuffer.put((byte)((char)i));
+            nioBuffer.put((byte) ((char) i));
         }
         System.out.println(Arrays.toString(nioBuffer.array()));
 
         // 3-2 Netty
         ByteBuf nettyBuffer = Unpooled.buffer(10);
-        for (int i = 0; i < nettyBuffer.capacity(); i++) {
-            nettyBuffer.writeByte((byte)((char)i));
+        // 获取capacity，由于它是动态的，每次循环都会随着写入数量的增大而增大，进而造成死循环，同时会造成缓冲区无限扩容。
+        int capacity = nettyBuffer.capacity();
+        for (int i = 0; i < capacity; i++) {
+            nettyBuffer.writeByte((byte) ((char) i));
         }
         System.out.println(Arrays.toString(nioBuffer.array()));
     }
@@ -79,7 +80,31 @@ public class Demo01NettyBuf {
      * 方法入口
      */
     public static void main(String[] args) {
-        read();
+        // 下面进行一个ByteBuf写入读取的完整示例
+        ByteBuf buffer = Unpooled.buffer(10);
+        // 写入
+        for (int i = 0; i < buffer.capacity(); i++) {
+            buffer.writeByte(i);
+        }
+        // 读取
+        int length1 = buffer.readableBytes();
+        for (int i = 0; i < length1; i++) {
+            System.out.println(buffer.readByte());
+        }
+        // 清除，如果没有清除，继续接着写入，buffer会扩容
+        //buffer.clear();
+        System.out.println();
+        // 写入
+        int capacity = buffer.capacity();
+        for (int i = 0; i < capacity; i++) {
+            buffer.writeByte(i + 1);
+        }
+        // 读取
+        int length2 = buffer.readableBytes();
+        for (int i = 0; i < length2; i++) {
+            System.out.println(buffer.readByte());
+        }
+        buffer.clear();
     }
 
 }

@@ -16,4 +16,4 @@ Unpooled 是 Netty 提供的一个专门用来操作缓冲区(即 Netty 的数�
 
   * 已读区域为 0 ~ readerIndex，可读区域为 readerIndex ~ writerIndex，可写区域为 writerIndex ~ capacity，如果有效数据存放在缓冲区中，那么其位置一定是在可读区域。
 
-  * 如果是使用 copiedBuffer，此时 capacity 的值就不再是开发者指定内容的长度，而是通过一种算法计算出来的，真实的可读区域最大值是 writerIndex，所以建议无论那种创建缓冲区的方法，需要循环读取缓冲区中的数据时，可读最大索引均使用 writerIndex 或者使用 readableBytes() 方法。
+  * 如果是使用 copiedBuffer，此时 capacity 的值就不再是开发者指定内容的长度，而是通过一种算法计算出来的，真实的可读区域最大值是 writerIndex，所以建议无论那种创建缓冲区的方法，需要循环读取缓冲区中的数据时，可读最大索引均使用 writerIndex-readIndex 或者使用 readableBytes() 方法。
