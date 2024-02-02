@@ -1,4 +1,4 @@
-package top.sharehome.chat.client3;
+package top.sharehome.chat.client03;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -6,7 +6,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
-import top.sharehome.chat.client3.handler.ChatClientHandler;
+import top.sharehome.chat.client03.handler.ChatClientHandler;
 
 import java.net.InetSocketAddress;
 import java.util.Objects;

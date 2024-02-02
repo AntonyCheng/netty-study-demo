@@ -1,4 +1,4 @@
-package top.sharehome.chat.client3.handler;
+package top.sharehome.chat.client03.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
