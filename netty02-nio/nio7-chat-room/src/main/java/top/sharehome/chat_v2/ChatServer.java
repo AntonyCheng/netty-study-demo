@@ -17,10 +17,10 @@ import java.util.Set;
  */
 
 public class ChatServer {
-    // 定义相关的属性
-    private Selector selector;
-    private ServerSocketChannel serverSocketChannel;
     private final int PORT = 9999;
+    // 定义相关的属性
+    private final Selector selector;
+    private final ServerSocketChannel serverSocketChannel;
 
     // 初始化服务器
     public ChatServer() {
@@ -38,6 +38,14 @@ public class ChatServer {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * 方法入口
+     */
+    public static void main(String[] args) {
+        ChatServer chatServer = new ChatServer();
+        chatServer.listen();
     }
 
     // 监听
@@ -110,7 +118,7 @@ public class ChatServer {
                 byteArrayOutputStream.write(buffer.array(), 0, buffer.limit());
                 buffer.clear();
             }
-            String message = LocalDateTime.now() + "==>" + new String(byteArrayOutputStream.toByteArray(), StandardCharsets.UTF_8);
+            String message = LocalDateTime.now() + "==>" + byteArrayOutputStream.toString(StandardCharsets.UTF_8);
             // 在服务端进行消息展示
             System.out.println(message);
             // 向其他客户端转发消息
@@ -144,14 +152,6 @@ public class ChatServer {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    /**
-     * 方法入口
-     */
-    public static void main(String[] args) {
-        ChatServer chatServer = new ChatServer();
-        chatServer.listen();
     }
 
 }

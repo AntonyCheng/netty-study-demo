@@ -1,6 +1,5 @@
 package top.sharehome.buffer;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
@@ -40,10 +39,10 @@ public class Demo01BaseOperation {
         ByteBuffer wrap = ByteBuffer.wrap("some bytes".getBytes());
         // 4、通过charset字符集从堆区创建大小为参数字节数组大小的读模式Buffer，下面两种写法效果一样，但推荐第一种
         ByteBuffer charset1 = StandardCharsets.UTF_8.encode("some bytes");
-        ByteBuffer charset2 = Charset.forName("UTF-8").encode("some bytes");
+        ByteBuffer charset2 = StandardCharsets.UTF_8.encode("some bytes");
         //    第四种主要用于对于数据字符集有特殊要求的内容，相当于对内容进行编码，如果需要解码需要使用decode()方法
         CharBuffer decode1 = StandardCharsets.UTF_8.decode(charset1);
-        CharBuffer decode2 = Charset.forName("UTF-8").decode(charset2);
+        CharBuffer decode2 = StandardCharsets.UTF_8.decode(charset2);
     }
 
     /**

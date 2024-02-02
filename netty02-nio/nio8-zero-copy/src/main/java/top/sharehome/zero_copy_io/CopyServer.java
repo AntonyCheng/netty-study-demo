@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.channels.*;
-import java.util.Iterator;
-import java.util.Set;
+import java.nio.channels.FileChannel;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 
 /**
  * 零拷贝服务端
@@ -29,7 +29,7 @@ public class CopyServer {
 
         ByteBuffer buffer = ByteBuffer.allocate(4096);
 
-        RandomAccessFile randomAccessFile = new RandomAccessFile(PROJECT_PATH+"/netty2-nio-demo/nio8-zero-copy/src/main/java/top/sharehome/zero_copy_io/file/2.txt","rw");
+        RandomAccessFile randomAccessFile = new RandomAccessFile(PROJECT_PATH + "/netty2-nio-demo/nio8-zero-copy/src/main/java/top/sharehome/zero_copy_io/file/2.txt", "rw");
         FileChannel fileChannel = randomAccessFile.getChannel();
 
         for (; ; ) {

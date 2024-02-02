@@ -21,9 +21,9 @@ public class ChatClient03 {
     // 定义相关属性
     private final String HOST = "127.0.0.1";
     private final int PORT = 9999;
-    private Selector selector;
-    private SocketChannel socketChannel;
-    private String username;
+    private final Selector selector;
+    private final SocketChannel socketChannel;
+    private final String username;
 
     // 初始化客户端
     public ChatClient03() {
@@ -44,9 +44,28 @@ public class ChatClient03 {
         }
     }
 
+    /**
+     * 方法入口
+     */
+    public static void main(String[] args) {
+        ChatClient03 chatClient03 = new ChatClient03();
+        // 启动线程进行读取数据
+        new Thread(chatClient03::read).start();
+        // 发送数据给服务器端
+        Scanner scanner = new Scanner(System.in);
+        while (scanner.hasNextLine()) {
+            String str = scanner.nextLine();
+            try {
+                chatClient03.send(str);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     // 向服务器发送消息
     public void send(String message) throws IOException {
-        if (message.trim().isEmpty()){
+        if (message.trim().isEmpty()) {
             return;
         }
         message = username + " : " + message;
@@ -69,7 +88,7 @@ public class ChatClient03 {
                             byteArrayOutputStream.write(buffer.array(), 0, buffer.limit());
                             buffer.clear();
                         }
-                        String message = new String(byteArrayOutputStream.toByteArray(), StandardCharsets.UTF_8);
+                        String message = byteArrayOutputStream.toString(StandardCharsets.UTF_8);
                         System.out.println(message);
                     }
                     iterator.remove();
@@ -77,25 +96,6 @@ public class ChatClient03 {
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * 方法入口
-     */
-    public static void main(String[] args) {
-        ChatClient03 chatClient03 = new ChatClient03();
-        // 启动线程进行读取数据
-        new Thread(chatClient03::read).start();
-        // 发送数据给服务器端
-        Scanner scanner = new Scanner(System.in);
-        while (scanner.hasNextLine()){
-            String str = scanner.nextLine();
-            try {
-                chatClient03.send(str);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         }
     }
 

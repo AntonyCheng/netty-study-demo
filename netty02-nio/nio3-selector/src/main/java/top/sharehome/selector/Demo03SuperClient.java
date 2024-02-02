@@ -9,6 +9,7 @@ import java.util.Scanner;
 
 /**
  * 创建一个客户端，能够不断发送
+ *
  * @author AntonyCheng
  */
 public class Demo03SuperClient {

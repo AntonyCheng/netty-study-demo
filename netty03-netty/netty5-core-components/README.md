@@ -124,6 +124,10 @@ ChannelHandler 组件对应的就是在 Bootstrap 或者 ServerBootstrap 中使�
   
 * 开发者经常需要自定义一个 Handler 类去继承 ChannelInboundHandlerAdapter，然后通过重写相应方法实现业务逻辑，常用方法如下：
 
+  * public void handlerAdded(ChannelHandlerContext ctx)，处理 Channel 连接就绪事件。
+
+  * public void handlerRemoved(ChannelHandlerContext ctx)，处理 Channel 断开连接就绪事件。
+  
   * public void channelRegistered(ChannelHandlerContext ctx)，处理 Channel 注册就绪事件。
   
   * public void channelUnregistered(ChannelHandlerContext ctx)，处理 Channel 注销就绪事件。
@@ -136,6 +140,28 @@ ChannelHandler 组件对应的就是在 Bootstrap 或者 ServerBootstrap 中使�
   
   * public void channelReadComplete(ChannelHandlerContext ctx)，处理 Channel 读完毕就绪事件。
   
+  * public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)，处理 Channel 异常就绪事件。
+
+* 但是有一种更加深入人心的做法是去继承 SimpleChannelInboundHandler<T>，然后重写对应方法实现业务逻辑，常用方法如下：
+
+  * protected abstract void channelRead0(ChannelHandlerContext ctx, I msg)，必须实现的一个处理可读就绪事件的方法，对于读取事件而言可以简化数据类型的转换。
+  
+  * public void handlerAdded(ChannelHandlerContext ctx)，处理 Channel 连接就绪事件。
+  
+  * public void handlerRemoved(ChannelHandlerContext ctx)，处理 Channel 断开连接就绪事件。
+
+  * public void channelRegistered(ChannelHandlerContext ctx)，处理 Channel 注册就绪事件。
+
+  * public void channelUnregistered(ChannelHandlerContext ctx)，处理 Channel 注销就绪事件。
+
+  * public void channelActive(ChannelHandlerContext ctx)，处理 Channel 准备（活动）就绪事件。
+
+  * public void channelInactive(ChannelHandlerContext ctx)，处理 Channel 非活动就绪事件。
+
+  * public void channelRead(ChannelHandlerContext ctx, Object msg)，处理 Channel 可读就绪事件。
+
+  * public void channelReadComplete(ChannelHandlerContext ctx)，处理 Channel 读完毕就绪事件。
+
   * public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)，处理 Channel 异常就绪事件。
 
 #### Pipeline&ChannelPipeline
@@ -195,3 +221,5 @@ Netty 中所有的 IO 操作都是异步的，不能立刻得知消息是否被�
 * isCancelled()，判断已完成的当前操作是否被取消。
 
 * addListener()，注册监听器，当操作已完成(isDone 方法返回完成)，将会通知指定的监听器；如果 Future 对象已完成，则通知指定的监听器。
+
+**接下来，将根据上面的描述对 Netty 处理事件进行较为标准的示例代码编写**

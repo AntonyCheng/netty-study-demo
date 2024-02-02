@@ -23,7 +23,7 @@ public class CopyServer {
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(9999);
         System.out.println("文件服务器启动成功...");
-        while (true){
+        while (true) {
             Socket socket = serverSocket.accept();
             InputStream socketInputStream = socket.getInputStream();
             DataInputStream dataInputStream = new DataInputStream(socketInputStream);

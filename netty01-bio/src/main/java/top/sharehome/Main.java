@@ -34,7 +34,7 @@ public class Main {
         ServerSocket serverSocket = new ServerSocket(6666);
         System.out.println("服务器启动成功！");
         while (true) {
-            System.out.println("线程信息 id = "+Thread.currentThread().getId()+"，名称 = "+Thread.currentThread().getName());
+            System.out.println("线程信息 id = " + Thread.currentThread().getId() + "，名称 = " + Thread.currentThread().getName());
             // 监听，等待客户端连接
             System.out.println("等待连接...");
             final Socket socket = serverSocket.accept();
@@ -56,7 +56,7 @@ public class Main {
      */
     public static void handler(Socket socket) {
         try {
-            System.out.println("线程信息 id = "+Thread.currentThread().getId()+"，名称 = "+Thread.currentThread().getName());
+            System.out.println("线程信息 id = " + Thread.currentThread().getId() + "，名称 = " + Thread.currentThread().getName());
             byte[] bytes = new byte[1024];
             InputStream inputStream = socket.getInputStream();
             while (true) {

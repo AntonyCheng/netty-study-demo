@@ -18,7 +18,6 @@ import java.nio.ByteBuffer;
  * （1）写数据时，limit表示可对Buffer最多写入多少个数据。写模式下，limit等于Buffer的capacity。
  * （2）读数据时，limit表示Buffer里有多少可读数据（notnull的数据），因此能读到之前写入的所有数据（limit被设置成已写数据的数量，这个值在写模式下就是position）。
  *
- *
  * @author AntonyCheng
  */
 
@@ -67,7 +66,7 @@ public class Demo02ThreeElements {
         System.out.println(buffer.mark());
 
         // 全部读取 == 此时capacity=10、position=5、limit=5
-        while (buffer.hasRemaining()){
+        while (buffer.hasRemaining()) {
             buffer.get();
         }
         System.out.println(buffer.mark());

@@ -2,7 +2,9 @@ package top.sharehome.selector;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.channels.*;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -80,7 +82,7 @@ public class Demo01BaseOperation {
         Selector selector = Selector.open();
 
         // 进行注册
-        serverSocketChannel.register(selector,serverSocketChannel.validOps());
+        serverSocketChannel.register(selector, serverSocketChannel.validOps());
 
         // 不管选择结果与否直接让其返回
         selector.wakeup();

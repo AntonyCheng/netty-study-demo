@@ -3,7 +3,10 @@ package top.sharehome.selector;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.channels.*;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
@@ -53,7 +56,7 @@ public class Demo03SuperServer {
                     // 使用Buffer进行读取
                     while (channel.read(buffer) != -1) {
                         buffer.flip();
-                        while (buffer.hasRemaining()){
+                        while (buffer.hasRemaining()) {
                             System.out.println(StandardCharsets.UTF_8.decode(buffer));
                         }
                         buffer.clear();

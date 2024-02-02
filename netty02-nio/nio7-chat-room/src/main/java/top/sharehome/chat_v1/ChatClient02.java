@@ -33,9 +33,9 @@ public class ChatClient02 {
         // 创建线程
         new Thread(() -> {
             try {
-                for(;;){
+                for (; ; ) {
                     int readChannels = selector.select();
-                    if (readChannels==0){
+                    if (readChannels == 0) {
                         continue;
                     }
                     Iterator<SelectionKey> iterator = selector.selectedKeys().iterator();
@@ -77,7 +77,7 @@ public class ChatClient02 {
             byteArrayOutputStream.write(buffer.array(), 0, buffer.limit());
             buffer.clear();
         }
-        String message = new String(byteArrayOutputStream.toByteArray(), StandardCharsets.UTF_8);
+        String message = byteArrayOutputStream.toString(StandardCharsets.UTF_8);
         // 把通道再次注册到选择器上去，监听可读状态
         channel.register(selector, SelectionKey.OP_READ);
         // 把客户端发送的消息广播到其他客户端中去

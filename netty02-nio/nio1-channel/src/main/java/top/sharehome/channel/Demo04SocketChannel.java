@@ -80,7 +80,7 @@ public class Demo04SocketChannel {
         // 转换buffer写模式到读模式
         buffer.flip();
         // 获取buffer中的内容
-        while (buffer.hasRemaining()){
+        while (buffer.hasRemaining()) {
             System.out.print((char) buffer.get());
         }
         socketChannel.close();

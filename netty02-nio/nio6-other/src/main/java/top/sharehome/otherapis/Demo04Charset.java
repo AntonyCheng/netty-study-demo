@@ -16,7 +16,7 @@ public class Demo04Charset {
      */
     public static void main(String[] args) throws CharacterCodingException {
         // 1、获取Charset对象，但是现在也可用 Charset charset = StandardCharsets.UTF_8; 局限性就在于只能使用StandardCharsets中固定的字符集；
-        Charset charset = Charset.forName("UTF-8");
+        Charset charset = StandardCharsets.UTF_8;
 
         // 2、获取编码器对象
         CharsetEncoder charsetEncoder = charset.newEncoder();
