@@ -141,6 +141,8 @@ ChannelHandler 组件对应的就是在 Bootstrap 或者 ServerBootstrap 中使�
   * public void channelReadComplete(ChannelHandlerContext ctx)，处理 Channel 读完毕就绪事件。
   
   * public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)，处理 Channel 异常就绪事件。
+  
+  * public void userEventTriggered(ChannelHandlerContext ctx, Object evt)，处理用户自定义的事件，比如 Netty 中的心跳触发事件（后续模块会有介绍）。
 
 * 但是有一种更加深入人心的做法是去继承 SimpleChannelInboundHandler<T>，然后重写对应方法实现业务逻辑，常用方法如下：
 
@@ -164,6 +166,8 @@ ChannelHandler 组件对应的就是在 Bootstrap 或者 ServerBootstrap 中使�
 
   * public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)，处理 Channel 异常就绪事件。
 
+  * public void userEventTriggered(ChannelHandlerContext ctx, Object evt)，处理用户自定义的事件，比如 Netty 中的心跳触发事件（后续模块会有介绍）。
+  
 #### Pipeline&ChannelPipeline
 
 在 Netty 中，ChannelPipeline 是一个非常重要的点：

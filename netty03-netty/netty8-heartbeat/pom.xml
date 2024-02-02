@@ -5,22 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>top.sharehome</groupId>
-        <artifactId>netty-study-demo</artifactId>
+        <artifactId>netty03-netty</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <packaging>pom</packaging>
 
-    <artifactId>netty03-netty</artifactId>
-    <modules>
-        <module>netty1-overview</module>
-        <module>netty2-task</module>
-        <module>netty3-future</module>
-        <module>netty4-http</module>
-        <module>netty5-core-components</module>
-        <module>netty6-unpooled</module>
-        <module>netty7-chat-room</module>
-        <module>netty8-heartbeat</module>
-    </modules>
+    <artifactId>netty8-heartbeat</artifactId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
