@@ -102,7 +102,7 @@ ChannelOption 组件就是 Bootstrap 或者 ServerBootstrap 调用 channel() 方
 
 #### ChannelHandler及其实现类
 
-ChannelHandler 组件对应的就是在 Bootstrap 或者 ServerBootstrap 中使用 handler() 方法在pipeline中添加的处理器类型，这个处理通常需要开发者自己实现。
+ChannelHandler 组件对应的就是在 Bootstrap 或者 ServerBootstrap 中使用 handler() 或者 childHandler() 方法在pipeline中添加的处理器类型，这个处理通常需要开发者自己实现。
 
 **特点如下**：
 
@@ -144,7 +144,7 @@ ChannelHandler 组件对应的就是在 Bootstrap 或者 ServerBootstrap 中使�
   
   * public void userEventTriggered(ChannelHandlerContext ctx, Object evt)，处理用户自定义的事件，比如 Netty 中的心跳触发事件（后续模块会有介绍）。
 
-* 但是有一种更加深入人心的做法是去继承 SimpleChannelInboundHandler<T>，然后重写对应方法实现业务逻辑，常用方法如下：
+* 但是有一种更加深入人心的做法来实现自定义处理器，即继承 SimpleChannelInboundHandler<T>，然后重写对应方法实现业务逻辑，常用方法如下：
 
   * protected abstract void channelRead0(ChannelHandlerContext ctx, I msg)，必须实现的一个处理可读就绪事件的方法，对于读取事件而言可以简化数据类型的转换。
   
@@ -167,7 +167,25 @@ ChannelHandler 组件对应的就是在 Bootstrap 或者 ServerBootstrap 中使�
   * public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)，处理 Channel 异常就绪事件。
 
   * public void userEventTriggered(ChannelHandlerContext ctx, Object evt)，处理用户自定义的事件，比如 Netty 中的心跳触发事件（后续模块会有介绍）。
+
+* 其实在 Netty 中还有许多已经封装好的处理器：
+
+  * LoggingHandler(LogLevel logLevel) 日志处理器，常用于服务端 handler 方法中。
+
+  * HttpServerCodec() Http编解码处理器，常用于服务端 childHandler 方法中，需要和Web客户端进行通信的时候会用到。
   
+  * StringEncoder() 字符串编码处理器，常用于服务端 childHandler 方法中。
+
+  * StringDecoder() 字符串解码处理器，常用于服务端 childHandler 方法中。
+
+  * IdleStateHandler() 心跳（空闲状态）检测处理器，常用于服务端 childHandler 方法中，紧接着会添加一个自定义处理空闲状态的处理器。
+
+  * ChunkedWriteHandler() 块传输处理器，常用于服务端 childHandler 方法中，一般和 WebSocket 编程搭配使用。
+
+  * HttpObjectAggregator() Http对象聚合处理器，常用于服务端 childHandler 方法中，一般和 WebSocket 编程搭配使用，常跟在 ChunkedWriteHandler() 处理器之后。
+
+  * WebSocketServerProtocolHandler() WebSocket 协议处理器，常用于服务端 childHandler 方法中，将 Http 协议升级为 WS 协议，保持长连接。
+
 #### Pipeline&ChannelPipeline
 
 在 Netty 中，ChannelPipeline 是一个非常重要的点：

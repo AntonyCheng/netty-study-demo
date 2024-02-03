@@ -1,30 +1,25 @@
-package top.sharehome.heartbeat.server;
+package top.sharehome.websocket.server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
+import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import io.netty.handler.timeout.IdleStateHandler;
-import top.sharehome.heartbeat.server.handler.IdleHandler;
-import top.sharehome.heartbeat.server.handler.ServerHandler;
-
-import java.util.concurrent.TimeUnit;
+import io.netty.handler.stream.ChunkedWriteHandler;
+import top.sharehome.websocket.server.handler.TextWebSocketFrameHandler;
 
 /**
- * 创建普通服务端标准示例代码
+ * WebSocket服务端
  *
  * @author AntonyCheng
  */
-public class NettyServer {
+public class WebSocketServer {
 
-    /**
-     * 方法入口
-     */
     public static void main(String[] args) {
         // 创建两个线程组
         EventLoopGroup bossGroup = new NioEventLoopGroup();
@@ -52,27 +47,27 @@ public class NettyServer {
                         @Override
                         protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
                             ChannelPipeline pipeline = nioSocketChannel.pipeline();
-                            // 添加Netty自带的编码器
-                            pipeline.addLast(new StringEncoder());
-                            // 添加Netty自带的解码器
-                            pipeline.addLast(new StringDecoder());
-                            // 添加自定义处理器
-                            pipeline.addLast(new ServerHandler());
+                            // 因为基于Http协议，使用Http编解码器
+                            pipeline.addLast(new HttpServerCodec());
+                            // 因为是以块方式写，添加ChunkedWriteHandler处理器
+                            pipeline.addLast(new ChunkedWriteHandler());
                             /*
-                            加入一个Netty自带的心跳（空闲状态）检测处理器：IdleStateHandler，它会在一定条件下产生IdleStateEvent
+                            HttpObjectAggregator处理器可以将多个块聚合起来，这就是为什么当浏览器发送大量数据时会发出多次Http请求的原因。
                             参数说明：
-                            1、int readerIdleTime：表示多长时间服务端没有读操作，进而发送一个心跳检测包检测连接是否正常
-                            2、int writerIdleTime：表示多长时间服务端没有写操作，进而发送一个心跳检测包检测连接是否正常
-                            3、int allIdleTime：表示多长时间服务端没有读写操作，进而发送一个心跳检测包检测连接是否正常
-                            4、TimeUnit unit：时间单位
-                            当IdleStateEvent产生后，就会传递给管道的下一个处理器去处理
+                            int maxContentLength 即单次聚合的最大长度
                              */
-                            pipeline.addLast(new IdleStateHandler(3, 5, 7, TimeUnit.SECONDS));
+                            pipeline.addLast(new HttpObjectAggregator(8192));
                             /*
-                            处理IdleStateEvent的自定义处理器
+                            WebSocket 传递数据是以帧的形式进行传递，可以看到 WebSocketFrame 类中有六个子类，最常用的就是 TextWebSocketFrame 类，
+                            浏览器请求时是以 ws://IP:PORT/xxx 的格式表示 URL，而这里添加 WebSocketServerProtocolHandler 对象主要是将 Http 协议升级为 WS 协议，保持长连接，
+                            那么如何升级的呢？是因为服务器和 Web 客户端之前会提前隐式沟通，通过 101 状态码表示可切换传输协议。
+                            参数说明：
+                            String websocketPath 即 WebSocket 访问的基础路径，此时如果访问 ws://127.0.0.1:9999 是没办法进行 WebSocket 数据传输的，需要 ws://127.0.0.1:9999/websocket 才行，
+                                                 如果没有按照要求访问，101 状态码就不会存在。
                              */
-                            pipeline.addLast(new IdleHandler());
-
+                            pipeline.addLast(new WebSocketServerProtocolHandler("/websocket"));
+                            // 添加自定义Handler来处理WebSocket数据
+                            pipeline.addLast(new TextWebSocketFrameHandler());
                         }
                     });
             // 异步绑定IP

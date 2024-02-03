@@ -7,6 +7,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 import top.sharehome.chat.server.handler.ChatServerHandler;
 
 /**
@@ -32,6 +34,12 @@ public class NettyChatServer {
                     .channel(NioServerSocketChannel.class)
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
+                    .handler(new ChannelInitializer<NioServerSocketChannel>() {
+                        @Override
+                        protected void initChannel(NioServerSocketChannel nioServerSocketChannel) throws Exception {
+                            nioServerSocketChannel.pipeline().addLast(new LoggingHandler(LogLevel.INFO));
+                        }
+                    })
                     .childHandler(new ChannelInitializer<NioSocketChannel>() {
                         @Override
                         protected void initChannel(NioSocketChannel ch) throws Exception {

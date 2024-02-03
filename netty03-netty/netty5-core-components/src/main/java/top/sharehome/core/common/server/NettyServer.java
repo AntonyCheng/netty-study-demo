@@ -7,6 +7,8 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 import top.sharehome.core.common.server.handler.ServerHandler;
 
 /**
@@ -34,6 +36,15 @@ public class NettyServer {
                     .option(ChannelOption.SO_BACKLOG, 128)
                     // 配置workerGroup保持连接活动状态
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
+                    // 配置bossGroup处理器
+                    .handler(new ChannelInitializer<NioServerSocketChannel>() {
+                        @Override
+                        protected void initChannel(NioServerSocketChannel nioServerSocketChannel) throws Exception {
+                            ChannelPipeline pipeline = nioServerSocketChannel.pipeline();
+                            // 添加日志处理器
+                            pipeline.addLast(new LoggingHandler(LogLevel.INFO));
+                        }
+                    })
                     // 配置workerGroup处理器
                     .childHandler(new ChannelInitializer<NioSocketChannel>() {
                         @Override
