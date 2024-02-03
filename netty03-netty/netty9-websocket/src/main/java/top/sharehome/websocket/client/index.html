@@ -29,7 +29,11 @@
     // 服务端断开连接就绪
     websocket.onclose = function (event) {
         let rt = document.getElementById("responseText");
-        rt.value = rt.value + "\n" + "连接已断开..."
+        if (rt.value===""){
+            rt.value = "连接已断开..."
+        }else {
+            rt.value = rt.value + "\n" + "连接已断开..."
+        }
     }
 
     /**
@@ -38,6 +42,9 @@
     function send(message) {
         // 判断WebSocket是不是开启状态
         if (websocket.readyState === WebSocket.OPEN) {
+            if(message===''){
+                return
+            }
             // 通过websocket发消息
             websocket.send(message)
         } else {

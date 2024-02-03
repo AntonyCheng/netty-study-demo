@@ -4,7 +4,9 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * WebSocket处理器
@@ -13,6 +15,11 @@ import java.time.LocalDateTime;
  * @author AntonyCheng
  */
 public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
+
+    /**
+     * 日期格式
+     */
+    private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
      * 处理Web客户端连接事件
@@ -30,7 +37,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) {
         System.out.println("服务器端收到消息：" + msg.text());
         // 回复客户端
-        ctx.channel().writeAndFlush(new TextWebSocketFrame("服务端已经收到消息：" + msg.text() + "\t返回服务器时间：" + LocalDateTime.now()));
+        ctx.channel().writeAndFlush(new TextWebSocketFrame("[" + SIMPLE_DATE_FORMAT.format(new Date()) + "]" + " 服务端已收到：" + msg.text()));
     }
 
     /**
