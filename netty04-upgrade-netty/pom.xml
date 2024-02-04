@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>netty11-codec-handler</module>
+        <module>netty12-log4f</module>
     </modules>
 
     <properties>

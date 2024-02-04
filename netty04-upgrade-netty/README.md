@@ -6,8 +6,10 @@
 
 1、Netty 编解码器和 Handler 的调用机制 ==> **netty11-codec-handler**
 
-2、TCP 粘包和半包以及解决方案 ==> **netty12-coalescing-splitting**
+2、Netty 整合 Log4j ==> **netty12-log4f**
 
-3、Netty 核心源码剖析 ==> **netty13-core-source**
+3、TCP 粘包和半包以及解决方案 ==> **netty13-coalescing-splitting**
 
-4、用 Netty 实现 dubbo RPC ==> **netty14-rpc**
+4、Netty 核心源码剖析 ==> **netty14-core-source**
+
+5、用 Netty 实现 dubbo RPC ==> **netty15-rpc**
