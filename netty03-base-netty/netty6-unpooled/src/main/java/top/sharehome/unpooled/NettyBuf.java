@@ -14,7 +14,7 @@ import java.util.Arrays;
  * @author AntonyCheng
  */
 
-public class Demo01NettyBuf {
+public class NettyBuf {
 
     /**
      * 1、创建操作
