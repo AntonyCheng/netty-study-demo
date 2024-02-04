@@ -11,7 +11,8 @@
     <modules>
         <module>netty01-bio</module>
         <module>netty02-nio</module>
-        <module>netty03-netty</module>
+        <module>netty03-base-netty</module>
+        <module>netty04-upgrade-netty</module>
     </modules>
 
     <properties>
