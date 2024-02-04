@@ -1,1 +1,1 @@
-请在该目录下命令行终端输入 `./protoc.exe --java_out=./pojo ./proto/xxx.proto` ，即可生成 POJO 类。
+proto.exe版本和依赖版本相同，请在该目录下命令行终端输入 `./protoc.exe --java_out=./pojo ./proto/xxx.proto` ，即可生成 POJO 类。
