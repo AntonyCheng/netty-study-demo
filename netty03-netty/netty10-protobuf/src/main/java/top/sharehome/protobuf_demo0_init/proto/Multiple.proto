@@ -1,0 +1,28 @@
+syntax = "proto3";
+option optimize_for = SPEED; // 快速解析
+option java_package = "top.sharehome.protobuf_demo0_init.pojo"; // 指定生成到哪个包下
+option java_outer_classname = "Multiple"; // Protobuf编译器生成的外部类名，同时也是文件名
+// protobuf可以使用message管理其他的message
+message MultipleFactory{
+  // 定义其他message的枚举类型，枚举不算是message中的正式参数，proto3要求枚举类型中枚举字段序号必须从 0 开始
+  enum DateType{
+    BossType = 0;
+    WorkerType = 1;
+  }
+  // message第一个参数：用dataType来标识传的是哪个枚举类型
+  DateType dateType = 1;
+  // message第二个参数：oneof 关键字表示每次枚举类型最多只能出现Boss和Worker之中的一个，节省空间
+  oneof dataBody{
+    Boss boss = 2;
+    Worker worker = 3;
+  }
+}
+message Boss{
+  int32 id = 1;
+  string name = 2;
+}
+message Worker{
+  int32 id = 1;
+  string bossName = 2;
+  string name = 3;
+}

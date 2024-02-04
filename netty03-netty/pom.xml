@@ -21,6 +21,7 @@
         <module>netty7-chat-room</module>
         <module>netty8-heartbeat</module>
         <module>netty9-websocket</module>
+        <module>netty10-protobuf</module>
     </modules>
 
     <properties>
