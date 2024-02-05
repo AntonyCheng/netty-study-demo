@@ -17,7 +17,7 @@ public class ProtobufClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        // 异步延迟0.1秒线程发送Boss类型，不然writeAndFlush会刷新同一片缓冲区，如果不想延时发送，那就写两个Handler
+        // 异步延迟0.1秒线程发送Boss类型，不然writeAndFlush会刷新同一片缓冲区，最终导致的就是粘包问题（后续会单独描述，此处就先避免同时发送消息），如果不想延时发送，那就写两个Handler
         ctx.channel().eventLoop().schedule(() -> {
             Multiple.Boss boss = Multiple.Boss.newBuilder().setId(10010).setName("AntonyCheng").build();
             Multiple.MultipleFactory bossFactory = Multiple.MultipleFactory.newBuilder().setDateType(Multiple.MultipleFactory.DateType.BossType).setBoss(boss).build();

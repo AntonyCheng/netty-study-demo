@@ -1,19 +1,24 @@
-package top.sharehome.log4j;
+package top.sharehome.demo01_problem.server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.http.HttpServerCodec;
-import top.sharehome.log4j.handler.HttpServerHandler;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
+import top.sharehome.demo01_problem.server.handler.ServerHandler;
 
 /**
- * Http服务端
+ * 服务端
  *
  * @author AntonyCheng
  */
-public class HttpServer {
+public class NettyServer {
+
+    /**
+     * 方法入口
+     */
     public static void main(String[] args) {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -21,12 +26,18 @@ public class HttpServer {
             ServerBootstrap serverBootstrap = new ServerBootstrap()
                     .group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
+                    .option(ChannelOption.SO_BACKLOG, 128)
+                    .childOption(ChannelOption.SO_KEEPALIVE, true)
+                    .handler(new ChannelInitializer<NioServerSocketChannel>() {
+                        @Override
+                        protected void initChannel(NioServerSocketChannel ch) throws Exception {
+                            ch.pipeline().addLast(new LoggingHandler(LogLevel.DEBUG));
+                        }
+                    })
                     .childHandler(new ChannelInitializer<NioSocketChannel>() {
                         @Override
                         protected void initChannel(NioSocketChannel ch) throws Exception {
-                            ChannelPipeline pipeline = ch.pipeline();
-                            pipeline.addLast(new HttpServerCodec());
-                            pipeline.addLast(new HttpServerHandler());
+                            ch.pipeline().addLast(new ServerHandler());
                         }
                     });
             ChannelFuture bindFuture = serverBootstrap.bind(9999);
@@ -34,7 +45,7 @@ public class HttpServer {
                 @Override
                 public void operationComplete(ChannelFuture channelFuture) throws Exception {
                     if (channelFuture.isSuccess()) {
-                        System.out.println("Http 服务器启动成功...");
+                        System.out.println("服务器启动成功...");
                     }
                 }
             });
@@ -43,7 +54,7 @@ public class HttpServer {
                 @Override
                 public void operationComplete(ChannelFuture channelFuture) throws Exception {
                     if (channelFuture.isSuccess()) {
-                        System.out.println("Http 服务器关闭成功...");
+                        System.out.println("服务器关闭成功...");
                     }
                 }
             });
@@ -54,4 +65,5 @@ public class HttpServer {
             workerGroup.shutdownGracefully();
         }
     }
+
 }
