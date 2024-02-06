@@ -49,7 +49,8 @@ public class NettyProtobufServer {
                             pipeline.addLast(new ProtobufServerHandler());
                         }
                     });
-            // 异步绑定端口
+            // 异步监听服务器启动事件
+            // 异步监听启动事件是为了让服务端在后台启动，加快速度，但是也可以同步启动
             ChannelFuture bindFuture = serverBootstrap.bind(9999);
             bindFuture.addListener(new ChannelFutureListener() {
                 @Override
@@ -59,7 +60,8 @@ public class NettyProtobufServer {
                     }
                 }
             });
-            // 同步监听关闭服务器
+            // 同步监听关闭事件
+            // 同步监听关闭事件是为了让服务端关闭前就阻塞在此，不会执行finally代码块中的关闭线程组操作
             ChannelFuture closeFuture = bindFuture.channel().closeFuture().sync();
             closeFuture.addListener(new ChannelFutureListener() {
                 @Override

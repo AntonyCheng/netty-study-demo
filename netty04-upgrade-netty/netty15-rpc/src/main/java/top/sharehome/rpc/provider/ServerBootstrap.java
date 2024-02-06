@@ -4,7 +4,6 @@ import top.sharehome.rpc.provider.server.NettyServer;
 
 /**
  * 服务端启动类
- * todo:研究一下sync()方法到底有什么作用
  *
  * @author AntonyCheng
  */

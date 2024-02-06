@@ -45,8 +45,9 @@ public class NettyClient {
                             pipeline.addLast(new ClientHandler());
                         }
                     });
-            // 异步连接服务端
-            ChannelFuture connectFuture = bootstrap.connect(new InetSocketAddress("127.0.0.1", 9999));
+            // 同步连接服务端
+            // 同步的原因：需要保证客户端已经连接上服务端才能放行
+            ChannelFuture connectFuture = bootstrap.connect(new InetSocketAddress("127.0.0.1", 9999)).sync();
             // 监听connectFuture连接事件结果
             connectFuture.addListener(new ChannelFutureListener() {
                 @Override
@@ -72,6 +73,7 @@ public class NettyClient {
             // 关闭客户端通道
             channel.close();
             // 同步监听关闭事件
+            // 同步监听关闭事件是为了让服务端关闭前就阻塞在此，不会执行finally代码块中的关闭线程组操作
             ChannelFuture closeFuture = connectFuture.channel().closeFuture().sync();
             closeFuture.addListener(new ChannelFutureListener() {
                 @Override

@@ -18,10 +18,10 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         // 获取客户端发送的消息，并调用服务
-        System.out.println("msg: " + msg);
+        System.out.println("来自客户端: " + msg);
         // 客户端在调用服务器的服务时，需要定义一个协议让客户端遵守
         // 例如服务端要求每次发送消息时都必须以某个字符串开头（这里就以"HelloService#hello#"作为协议头进行调用）
-        if (msg.toString().startsWith("HelloService#hello#")){
+        if (msg.toString().startsWith("HelloService#hello#")) {
             // 截取出正确的参数
             String param = msg.toString().substring(msg.toString().lastIndexOf("#") + 1);
             // 调用函数获取结果

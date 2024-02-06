@@ -75,7 +75,8 @@ public class NettyClient {
                             pipeline.addLast(clientHandler);
                         }
                     });
-            // 异步连接服务端
+            // 同步连接服务端
+            // 同步的原因：要确保连接服务器成功之后才能放行
             ChannelFuture connectFuture = bootstrap.connect(new InetSocketAddress("127.0.0.1", 9999)).sync();
             connectFuture.addListener(new ChannelFutureListener() {
                 @Override
@@ -85,6 +86,8 @@ public class NettyClient {
                     }
                 }
             });
+            // 异步监听客户端关闭事件
+            // 异步的原因：为了不让方法阻塞于此，导致调用该初始化方法整体阻塞
             ChannelFuture closeFuture = connectFuture.channel().closeFuture();
             closeFuture.addListener(new ChannelFutureListener() {
                 @Override
@@ -97,6 +100,5 @@ public class NettyClient {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        // 注意：此时客户端
     }
 }
